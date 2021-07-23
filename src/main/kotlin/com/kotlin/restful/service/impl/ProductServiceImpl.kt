@@ -5,6 +5,7 @@ import com.kotlin.restful.model.CreateProductRequest
 import com.kotlin.restful.model.ProductResponse
 import com.kotlin.restful.repository.ProductRepository
 import com.kotlin.restful.service.ProductService
+import com.kotlin.restful.validation.ValidationUtil
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -14,15 +15,24 @@ import java.util.*
  */
 
 @Service
-class ProductServiceImpl(val productRepository: ProductRepository) : ProductService {
+class ProductServiceImpl(
+    val productRepository: ProductRepository,
+    val validationUtil: ValidationUtil
+    ) : ProductService {
 
     override fun create(createProductRequest: CreateProductRequest): ProductResponse {
+        // kita lakukan validation dulu, jika terjadi error maka akan throw exception
+        validationUtil.validate(createProductRequest)
+
         // kita insert data product nya ke dalam database
         val product = Product(
-            id = createProductRequest.id,
-            name = createProductRequest.name,
-            price = createProductRequest.price,
-            quantity = createProductRequest.quantity,
+            /**
+             * !! artinya data tidak boleh null
+             */
+            id = createProductRequest.id!!,
+            name = createProductRequest.name!!,
+            price = createProductRequest.price!!,
+            quantity = createProductRequest.quantity!!,
             createdAt = Date(),
             updatedAt = null
         )
