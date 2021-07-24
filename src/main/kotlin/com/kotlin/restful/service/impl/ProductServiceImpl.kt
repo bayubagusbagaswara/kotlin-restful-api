@@ -4,6 +4,7 @@ import com.kotlin.restful.entity.Product
 import com.kotlin.restful.error.NotFoundException
 import com.kotlin.restful.model.CreateProductRequest
 import com.kotlin.restful.model.ProductResponse
+import com.kotlin.restful.model.UpdateProductRequest
 import com.kotlin.restful.repository.ProductRepository
 import com.kotlin.restful.service.ProductService
 import com.kotlin.restful.validation.ValidationUtil
@@ -58,6 +59,29 @@ class ProductServiceImpl(
         } else {
             return convertProductToProductResponse(product)
         }
+    }
+
+    override fun update(id: String, updateProductRequest: UpdateProductRequest): ProductResponse {
+        // jika id nya tidak ketemu, maka lempar NotFoundException
+        val product = productRepository.findByIdOrNull(id)
+        if (product == null) {
+            throw NotFoundException()
+        }
+        // lakukan validation dulu sebelum update data product
+        validationUtil.validate(updateProductRequest)
+
+        // jika id nya ada, maka set dengan data baru
+        product.apply {
+            name = updateProductRequest.name!!
+            price = updateProductRequest.price!!
+            quantity = updateProductRequest.quantity!!
+            // kita perlu tambahkan waktu updatenya
+            updatedAt = Date()
+        }
+        // lakukan save untuk update data product yang baru
+        productRepository.save(product)
+        // balikan data response product
+        return convertProductToProductResponse(product)
     }
 
     // function untuk response dari Product
