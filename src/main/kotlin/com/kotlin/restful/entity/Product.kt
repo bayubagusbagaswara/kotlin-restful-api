@@ -14,22 +14,23 @@ import javax.persistence.Table
 data class Product(
 
     // kasih tau bahwa id adalah primary key dengan @Id
+    // var artinya bisa di assign ulang
     @Id
     val id: String,
 
     @Column(name = "Name")
-    val name: String,
+    var name: String,
 
     @Column(name = "Price")
-    val price: Long,
+    var price: Long,
 
     @Column(name = "Quantity")
-    val quantity: Int,
+    var quantity: Int,
 
     @Column(name = "Created_At")
-    val createdAt: Date,
+    var createdAt: Date,
 
     @Column(name = "Updated_At")
     // ? artinya tidak wajib ada datanya atau nullable
-    val updatedAt: Date?
+    var updatedAt: Date?
 )
