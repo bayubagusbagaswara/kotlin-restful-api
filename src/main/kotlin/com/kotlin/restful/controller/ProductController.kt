@@ -1,9 +1,6 @@
 package com.kotlin.restful.controller
 
-import com.kotlin.restful.model.CreateProductRequest
-import com.kotlin.restful.model.ProductResponse
-import com.kotlin.restful.model.UpdateProductRequest
-import com.kotlin.restful.model.WebResponse
+import com.kotlin.restful.model.*
 import com.kotlin.restful.service.ProductService
 import org.springframework.web.bind.annotation.*
 
@@ -86,6 +83,26 @@ class ProductController(val productService: ProductService) {
             status = "OK",
             data = id
         )
+    }
+
+    /**
+     * controller untuk List Product
+     * tambahkan @RequestParam untuk memberitahu bahwa size dan page dimasukkan melalui query param
+     */
+    @GetMapping(
+        value = ["/api/products"],
+        produces = ["application/json"]
+    )
+    fun listProducts(@RequestParam(value = "size", defaultValue = "10") size: Int,
+                     @RequestParam(value = "page", defaultValue = "0") page: Int): WebResponse<List<ProductResponse>> {
+        val request = ListProductRequest(page = page, size = size)
+        val responses = productService.list(request)
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = responses
+        )
+
     }
 
 }
