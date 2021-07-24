@@ -3,14 +3,17 @@ package com.kotlin.restful.service.impl
 import com.kotlin.restful.entity.Product
 import com.kotlin.restful.error.NotFoundException
 import com.kotlin.restful.model.CreateProductRequest
+import com.kotlin.restful.model.ListProductRequest
 import com.kotlin.restful.model.ProductResponse
 import com.kotlin.restful.model.UpdateProductRequest
 import com.kotlin.restful.repository.ProductRepository
 import com.kotlin.restful.service.ProductService
 import com.kotlin.restful.validation.ValidationUtil
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
+import java.util.stream.Collectors
 
 /**
  * set sebagai Service dengan menggunakan @Service
@@ -76,6 +79,16 @@ class ProductServiceImpl(
         val product = findProductByIdOrThrowNotFound(id)
         // lalu delete menggunakan repository
         productRepository.delete(product)
+    }
+
+    override fun list(listProductRequest: ListProductRequest): List<ProductResponse> {
+        // pageable balikannya ada parameter paging nya
+        val page = productRepository.findAll(PageRequest.of(listProductRequest.page, listProductRequest.size))
+        // page balikannya adalah stream product, dan lalu konversi menjadi list menggunakan collect
+        // hasil dari product adalah List of product
+        val products = page.get().collect(Collectors.toList())
+        // transform menjadi product response
+        return products.map { convertProductToProductResponse(it) }
     }
 
     // function untuk mengecek id, jika id tidak ditemukan maka lempar NotFoundException

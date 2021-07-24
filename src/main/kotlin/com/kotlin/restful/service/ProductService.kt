@@ -1,6 +1,7 @@
 package com.kotlin.restful.service
 
 import com.kotlin.restful.model.CreateProductRequest
+import com.kotlin.restful.model.ListProductRequest
 import com.kotlin.restful.model.ProductResponse
 import com.kotlin.restful.model.UpdateProductRequest
 
@@ -17,5 +18,8 @@ interface ProductService {
 
     // function untuk Delete Product
     fun delete(id: String)
+
+    // function untuk List Product
+    fun list(listProductReques: ListProductRequest): List<ProductResponse>
 
 }
