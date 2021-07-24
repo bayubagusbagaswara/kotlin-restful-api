@@ -4,9 +4,7 @@ import com.kotlin.restful.model.CreateProductRequest
 import com.kotlin.restful.model.ProductResponse
 import com.kotlin.restful.model.WebResponse
 import com.kotlin.restful.service.ProductService
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 /**
  * untuk menandai ini adalah restful api gunakan @RestController
@@ -34,7 +32,22 @@ class ProductController(val productService: ProductService) {
             status = "OK",
             data = productResponse
         )
+    }
 
+    /**
+     * controller untuk Get Product
+     */
+    @GetMapping(
+        value = ["/api/products/{idProduct}"],
+        produces = ["application/json"]
+    )
+    fun getProduct(@PathVariable("idProduct") id: String): WebResponse<ProductResponse> {
+        val productResponse = productService.get(id)
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = productResponse
+        )
     }
 
 }
