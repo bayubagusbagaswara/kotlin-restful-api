@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
  */
 
 @Component
-class ApiKeyConfiguration(val apiKeyRepository: ApiKeyRepository) : ApplicationRunner{
+class ApiKeySeeder(val apiKeyRepository: ApiKeyRepository) : ApplicationRunner{
     // kita kan insert api key nya secara otomatis disini
 
     // buat api key nya
