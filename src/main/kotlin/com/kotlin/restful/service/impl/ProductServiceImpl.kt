@@ -1,11 +1,13 @@
 package com.kotlin.restful.service.impl
 
 import com.kotlin.restful.entity.Product
+import com.kotlin.restful.error.NotFoundException
 import com.kotlin.restful.model.CreateProductRequest
 import com.kotlin.restful.model.ProductResponse
 import com.kotlin.restful.repository.ProductRepository
 import com.kotlin.restful.service.ProductService
 import com.kotlin.restful.validation.ValidationUtil
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -41,7 +43,26 @@ class ProductServiceImpl(
         productRepository.save(product)
 
         // balikan responsenya
-        return  ProductResponse(
+        return convertProductToProductResponse(product)
+    }
+
+    override fun get(id: String): ProductResponse {
+        // kita load dari repository
+        val product = productRepository.findByIdOrNull(id)
+
+        // cek prouctnya null atau tidak
+        if (product == null) {
+            // disini artinya tidak ada datanya di database
+            // idealnya balikannya adalah error 404
+            throw NotFoundException()
+        } else {
+            return convertProductToProductResponse(product)
+        }
+    }
+
+    // function untuk response dari Product
+    private fun convertProductToProductResponse(product: Product): ProductResponse {
+        return ProductResponse(
             id = product.id,
             name = product.name,
             price = product.price,
