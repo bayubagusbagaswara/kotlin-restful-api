@@ -14,8 +14,8 @@ Request :
 - Method : POST
 - Endpoint : `/api/products`
 - Header :
-    - Content-Type: application/json
-    - Accept: application/json
+    - Content-Type : application/json
+    - Accept : application/json
 - Body :
 
 ```json
@@ -48,9 +48,9 @@ Response :
 
 Request :
 - Method : GET
-- Endpoint = `/api/products/{id_product}`
+- Endpoint : `/api/products/{id_product}`
 - Header :
-    - Accept: application/json
+    - Accept : application/json
 - Body :
 
 ```json
@@ -85,8 +85,8 @@ Request :
 - Method : PUT
 - Endpoint : `/api/products/{id_product}`
 - Header :
-  - Content-Type: application/json
-  - Accept: application/json
+  - Content-Type : application/json
+  - Accept : application/json
 - Body :
 
 ```json
@@ -120,7 +120,7 @@ Request :
 - Method : GET
 - Endpoint : `/api/products`
 - Header :
-  - Accept: application/json
+  - Accept : application/json
 - Query Param :
   - size : number,
   - page : number
@@ -158,7 +158,7 @@ Request :
 - Method : DELETE
 - Endpoint : `/api/products/{id_products}`
 - Header :
-  - Accept: application/json
+  - Accept : application/json
 
 Response :
 
