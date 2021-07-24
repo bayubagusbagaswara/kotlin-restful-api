@@ -1,6 +1,7 @@
 package com.kotlin.restful.controller
 
 import com.kotlin.restful.error.NotFoundException
+import com.kotlin.restful.error.UnauthorizedException
 import com.kotlin.restful.model.WebResponse
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -32,6 +33,16 @@ class ErrorController {
             code = 404,
             status = "NOT FOUND",
             data = "Not Found"
+        )
+    }
+
+    // handler error unutk UnauthorizedException
+    @ExceptionHandler(value = [UnauthorizedException::class])
+    fun unauthorized(unauthorizedException: UnauthorizedException): WebResponse<String> {
+        return WebResponse(
+            code = 401,
+            status = "UNAUTHORIZED",
+            data = "Please put your X-Api-Key"
         )
     }
 
