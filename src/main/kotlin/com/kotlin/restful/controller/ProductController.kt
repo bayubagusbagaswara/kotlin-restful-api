@@ -2,6 +2,7 @@ package com.kotlin.restful.controller
 
 import com.kotlin.restful.model.CreateProductRequest
 import com.kotlin.restful.model.ProductResponse
+import com.kotlin.restful.model.UpdateProductRequest
 import com.kotlin.restful.model.WebResponse
 import com.kotlin.restful.service.ProductService
 import org.springframework.web.bind.annotation.*
@@ -49,5 +50,28 @@ class ProductController(val productService: ProductService) {
             data = productResponse
         )
     }
+
+    /**
+     * controller untuk Update Product
+     */
+
+    @PutMapping(
+        value = ["/api/products/{idProduct}"],
+        produces = ["application/json"],
+        consumes = ["application/json"]
+    )
+    fun updateProduct(@PathVariable("idProduct") id: String,
+                      @RequestBody updateProductRequest: UpdateProductRequest): WebResponse<ProductResponse> {
+
+        val productResponse = productService.update(id, updateProductRequest)
+
+        return WebResponse(
+            code = 200,
+            status = "OK",
+            data = productResponse
+        )
+    }
+
+
 
 }
