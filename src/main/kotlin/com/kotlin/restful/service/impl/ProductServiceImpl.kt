@@ -48,25 +48,13 @@ class ProductServiceImpl(
     }
 
     override fun get(id: String): ProductResponse {
-        // kita load dari repository
-        val product = productRepository.findByIdOrNull(id)
-
-        // cek prouctnya null atau tidak
-        if (product == null) {
-            // disini artinya tidak ada datanya di database
-            // idealnya balikannya adalah error 404
-            throw NotFoundException()
-        } else {
-            return convertProductToProductResponse(product)
-        }
+        val product = findProductByIdOrThrowNotFound(id)
+        return convertProductToProductResponse(product)
     }
 
     override fun update(id: String, updateProductRequest: UpdateProductRequest): ProductResponse {
         // jika id nya tidak ketemu, maka lempar NotFoundException
-        val product = productRepository.findByIdOrNull(id)
-        if (product == null) {
-            throw NotFoundException()
-        }
+        val product = findProductByIdOrThrowNotFound(id)
         // lakukan validation dulu sebelum update data product
         validationUtil.validate(updateProductRequest)
 
@@ -82,6 +70,22 @@ class ProductServiceImpl(
         productRepository.save(product)
         // balikan data response product
         return convertProductToProductResponse(product)
+    }
+
+    override fun delete(id: String) {
+        val product = findProductByIdOrThrowNotFound(id)
+        // lalu delete menggunakan repository
+        productRepository.delete(product)
+    }
+
+    // function untuk mengecek id, jika id tidak ditemukan maka lempar NotFoundException
+    private fun findProductByIdOrThrowNotFound(id: String): Product {
+        val product = productRepository.findByIdOrNull(id)
+        if (product == null) {
+            throw NotFoundException()
+        } else {
+            return product
+        }
     }
 
     // function untuk response dari Product
